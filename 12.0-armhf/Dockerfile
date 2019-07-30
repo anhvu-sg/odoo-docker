@@ -23,6 +23,9 @@ RUN set -x; \
             python3-vobject \
             python3-watchdog \
             xz-utils \
+            build-essential\
+            libffi-dev\
+            python3-dev\
         && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.raspbian.stretch_armhf.deb \
         && echo '52a4512c40a53f44dcd873d8f7e295c54f285d8e wkhtmltox.deb' | sha1sum -c - \
         && dpkg --force-depends -i wkhtmltox.deb\
