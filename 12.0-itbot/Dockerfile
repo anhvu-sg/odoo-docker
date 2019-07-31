@@ -30,17 +30,18 @@ RUN set -x; \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
 # install latest postgresql-client
-RUN set -x; \
-        echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > etc/apt/sources.list.d/pgdg.list \
-        && export GNUPGHOME="$(mktemp -d)" \
-        && repokey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8' \
-        && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
-        && gpg --armor --export "${repokey}" | apt-key add - \
-        && gpgconf --kill all \
-        && rm -rf "$GNUPGHOME" \
-        && apt-get update  \
-        && apt-get install -y postgresql-client \
-        && rm -rf /var/lib/apt/lists/*
+# Use PostgreSql Docker
+# RUN set -x; \
+#         echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' > etc/apt/sources.list.d/pgdg.list \
+#         && export GNUPGHOME="$(mktemp -d)" \
+#         && repokey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8' \
+#         && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
+#         && gpg --armor --export "${repokey}" | apt-key add - \
+#         && gpgconf --kill all \
+#         && rm -rf "$GNUPGHOME" \
+#         && apt-get update  \
+#         && apt-get install -y postgresql-client \
+#         && rm -rf /var/lib/apt/lists/*
 
 # Install rtlcss (on Debian stretch)
 RUN set -x;\
@@ -58,8 +59,8 @@ RUN set -x;\
 
 # Install Odoo
 ENV ODOO_VERSION 12.0
-ARG ODOO_RELEASE=20190424
-ARG ODOO_SHA=3885be6791b9b8c2a74115299e57213c71db4363
+ARG ODOO_RELEASE=20190731
+ARG ODOO_SHA=8229eb70e7d11d18d3f4d068a88299b89e89e75b
 RUN set -x; \
         curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
         && echo "${ODOO_SHA} odoo.deb" | sha1sum -c - \
@@ -73,6 +74,11 @@ RUN pip3 install num2words xlwt
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 RUN chown odoo /etc/odoo/odoo.conf
+
+# Copy requirement.txt and install
+COPY ./requirements.txt /etc/odoo/
+RUN pip3 install -r /etc/odoo/requirements.txt
+
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
