@@ -3,7 +3,7 @@ name: CI to Docker Hub
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*"
 
 jobs:
 
@@ -39,6 +39,7 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'main') }}
             type=ref,event=tag
+            type=ref,event=branch
           flavor: |
             latest=false
       -
