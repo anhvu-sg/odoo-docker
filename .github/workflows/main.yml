@@ -39,7 +39,8 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'main') }}
             type=ref,event=tag
-            type=ref,event=branch
+            type=semver,pattern=15.0-arm64
+
           flavor: |
             latest=false
       -
