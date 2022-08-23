@@ -35,7 +35,7 @@ RUN apt-get update && \
     # && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
     # && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
     # && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
-    && rm -rf /var/lib/apt/lists/*
+    # && rm -rf /var/lib/apt/lists/*
 
 # install latest postgresql-client
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
