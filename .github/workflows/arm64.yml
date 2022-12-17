@@ -2,8 +2,10 @@ name: CI to Docker Hub
 
 on:
   push:
-    tags:
-      - "arm64-*"
+    branches:
+      - "arm64"
+#     tags:
+#       - "arm64-*"
 
 jobs:
 
